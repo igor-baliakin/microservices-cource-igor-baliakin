@@ -1,4 +1,4 @@
-# microservices-course-olezhek28
+# microservices-course-igor-baliakin
 
 Этот репозиторий содержит проект из курса [Микросервисы, как в BigTech 2.0]
 
