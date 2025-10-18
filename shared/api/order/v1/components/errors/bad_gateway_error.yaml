@@ -1,0 +1,12 @@
+type: object
+required:
+  - code
+  - message
+properties:
+  code:
+    type: integer
+    enum:
+      - 502
+  message:
+    type: string
+    example: Bad gateway

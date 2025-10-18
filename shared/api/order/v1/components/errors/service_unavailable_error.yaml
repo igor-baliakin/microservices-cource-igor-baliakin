@@ -1,0 +1,12 @@
+type: object
+required:
+  - code
+  - message
+properties:
+  code:
+    type: integer
+    enum:
+      - 503
+  message:
+    type: string
+    example: Service temporarily unavailable

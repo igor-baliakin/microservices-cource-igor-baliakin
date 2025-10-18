@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package payment.v1;
+
+// Name package 
+option go_package = "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/proto/payment/v1;payment_v1";
+
+// Payment service definition. Methods PayOrder.
+service PaymentService {
+  // Pay order by ID
+  rpc PayOrder (PayOrderRequest) returns (PayOrderResponse);
+}
+
+// Enum for payment status
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0; // Default value
+  PAYMENT_METHOD_CARD = 1; // Credit card payment
+  PAYMENT_METHOD_SBP = 2;      // SBP payment
+  PAYMENT_METHOD_CREDIT_CARD = 3;   // Credit card payment
+  PAYMENT_METHOD_INVESTOR_MONEY = 4; // Investor money  payment
+}
+
+// Request message for PayOrder method
+message PayOrderRequest {
+  string order_uuid = 1; // UUID of the order to be paid
+  string user_uuid = 2; // UUID of the user making the payment
+  PaymentMethod payment_method = 3; // Payment method
+}
+// Response message for PayOrder method
+message PayOrderResponse {
+  string transaction_uuid = 1; // UUID of the transaction
+}

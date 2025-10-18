@@ -1,0 +1,12 @@
+type: object
+required:
+  - code
+  - message
+properties:
+  code:
+    type: integer
+    enum:
+      - 404
+  message:
+    type: string
+    example: Resource not found

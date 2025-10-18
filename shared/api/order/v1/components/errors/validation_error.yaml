@@ -1,0 +1,12 @@
+type: object
+required:
+  - code
+  - message
+properties:
+  code:
+    type: integer
+    enum:
+      - 422
+  message:
+    type: string
+    example: Validation failed

@@ -1,0 +1,83 @@
+syntax = "proto3";
+package inventory.v1;
+
+import "google/protobuf/timestamp.proto";
+// Name package
+option go_package = "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/proto/inventory/v1;inventoryv1";
+// Inventory service definition. Methods GetPart, ListParts.
+service InventoryService {
+    rpc GetPart(GetPartRequest) returns (GetPartResponse);
+    rpc ListParts(ListPartsRequest) returns (ListPartsResponse);
+}
+// Enum for part categories
+enum Category {
+    CATEGORY_UNSPECIFIED = 0; // Default value
+    CATEGORY_ENGINE = 1; // Engine parts
+    CATEGORY_FUEL = 2; // Fuel system parts
+    CATEGORY_PORTHOLE = 3; // Porthole parts
+    CATEGORY_WING = 4; // Wing parts
+}
+
+
+// Message representing a part in the inventory
+message Part {
+    string uuid = 1; // UUID of the part
+    string name = 2; // Name of the part
+    string description = 3; // Description of the part
+    double price = 4; // Price of the part
+    int64 stock_quantity = 5; // Stock quantity of the part
+    Category category = 6; // Category of the part
+    Dimensions dimensions = 7; // Dimensions of the part
+    Manufacturer manufacturer = 8; // Manufacturer of the part
+    repeated string tags = 9; // Tags associated with the part
+    map<string, Value> metadata = 10; // Additional metadata as key-value pairs
+    google.protobuf.Timestamp created_at = 11; // Timestamp when the part was created
+    google.protobuf.Timestamp updated_at = 12; // Timestamp when the part was last updated
+}
+// Value message to represent different types of metadata values
+message Value {
+    oneof kind {
+        string string_value = 1; // String value
+        int64 int64_value = 2; // Integer value
+        double double_value = 3; // double value
+        bool bool_value = 4; // Boolean value
+    }   
+
+}
+// Message representing dimensions of a part
+message Dimensions {
+    double length = 1; // Length of the part in centimeters
+    double width = 2; // Width of the part in centimeters
+    double height = 3; // Height of the part in centimeters
+    double weight = 4; // Weight of the part in kilograms
+}
+// Message representing the manufacturer of a part
+message Manufacturer {
+    string name = 1; // Name of the manufacturer
+    string country = 2; // Country of the manufacturer
+    string website = 3; // Website of the manufacturer
+}
+// Filter message for listing parts
+message PartFilter {
+    repeated string uuids = 1; // Filter by UUIDs
+    repeated string names = 2; // Filter by names
+    repeated Category categories = 3; // Filter by categories
+    repeated string manufacturer_countries = 4; // Filter by manufacturer countries
+    repeated string tags = 5; // Filter by tags
+}
+// Request and response messages for GetPart and ListParts methods
+message GetPartRequest {
+    string uuid = 1; // UUID of the part to retrieve
+}
+// Response message for GetPart method
+message GetPartResponse {
+    Part part = 1; // The requested part
+}
+// Request and response messages for ListParts method
+message ListPartsRequest {
+    PartFilter filter = 1; // Filter criteria for listing parts
+}
+// Response message for ListParts method
+message ListPartsResponse {
+    repeated Part parts = 1; // List of parts
+}
