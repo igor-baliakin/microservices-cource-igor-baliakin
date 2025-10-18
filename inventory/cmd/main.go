@@ -10,16 +10,15 @@ import (
 	"strings"
 	"syscall"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
-
 	"github.com/brianvoe/gofakeit/v7"
 	"github.com/google/uuid"
-	inventory_v1 "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/proto/inventory/v1"
-
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	inventory_v1 "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/proto/inventory/v1"
 )
 
 const grpcAddr = "localhost:50051"
@@ -161,7 +160,6 @@ func generateMetadataValue() *inventory_v1.Value {
 	default:
 		return nil
 	}
-
 }
 
 func roundTo(x float64) float64 {
@@ -272,7 +270,6 @@ func main() {
 			log.Fatalf("failed to serve: %v", err)
 			return
 		}
-
 	}()
 
 	// Gracefully stop the server

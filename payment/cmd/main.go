@@ -9,9 +9,10 @@ import (
 	"syscall"
 
 	"github.com/google/uuid"
-	payment_v1 "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/proto/payment/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+
+	payment_v1 "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/proto/payment/v1"
 )
 
 const grpcAddr = "localhost:50052"
@@ -64,7 +65,6 @@ func main() {
 			log.Fatalf("failed to serve: %v", err)
 			return
 		}
-
 	}()
 
 	// Gracefully stop the server
@@ -74,5 +74,4 @@ func main() {
 	log.Println("🛑 Shutting down Payment gRPC server...")
 	s.GracefulStop()
 	log.Println("🛑 Payment gRPC server stopped")
-
 }

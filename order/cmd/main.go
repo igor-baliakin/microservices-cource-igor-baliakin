@@ -14,11 +14,12 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+
 	orderV1 "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/openapi/order/v1"
 	inventoryV1 "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/proto/inventory/v1"
 	paymentV1 "github.com/igor-baliakin/microservices-cource-igor-baliakin/shared/pkg/proto/payment/v1"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 const (
@@ -133,7 +134,6 @@ func (s *orderServer) CreateOrder(ctx context.Context, req *orderV1.CreateOrderR
 			CreatedAt:  order.CreatedAt,
 		},
 	}, nil
-
 }
 
 func (s *orderServer) PayOrder(ctx context.Context, req *orderV1.PayOrderRequest, params orderV1.PayOrderParams) (orderV1.PayOrderRes, error) {
@@ -274,11 +274,12 @@ func main() {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
-		log.Fatalf("failed to connect to inventory service: %v", err)
+		log.Printf("failed to connect to inventory service: %v", err)
+		return
 	}
 	defer func() {
 		if err := inventoryV1Conn.Close(); err != nil {
-			log.Fatalf("failed to close inventory service connection: %v", err)
+			log.Printf("failed to close inventory service connection: %v", err)
 		}
 	}()
 
@@ -287,11 +288,12 @@ func main() {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
-		log.Fatalf("failed to connect to payment service: %v", err)
+		log.Printf("failed to connect to payment service: %v", err)
+		return
 	}
 	defer func() {
 		if err := paymentV1Conn.Close(); err != nil {
-			log.Fatalf("failed to close payment service connection: %v", err)
+			log.Printf("failed to close payment service connection: %v", err)
 		}
 	}()
 
@@ -303,7 +305,7 @@ func main() {
 
 	handler, err := orderV1.NewServer(srv)
 	if err != nil {
-		log.Fatalf("failed to create order server: %v", err)
+		log.Printf("failed to create order server: %v", err)
 		return
 	}
 	r.Mount("/", handler)
@@ -317,11 +319,11 @@ func main() {
 	go func() {
 		log.Printf("🚀 Order HTTP server listening at %v", server.Addr)
 		if errServer := server.ListenAndServe(); errServer != nil && !errors.Is(errServer, http.ErrServerClosed) {
-			log.Fatalf("failed to start HTTP server: %v", errServer)
+			log.Printf("failed to start HTTP server: %v", errServer)
 			return
 		}
 	}()
-	//graceful shutdown logic would go here
+	// graceful shutdown logic would go here
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
@@ -334,7 +336,7 @@ func main() {
 
 	err = server.Shutdown(ctx)
 	if err != nil {
-		log.Fatalf("failed to shutdown server: %v", err)
+		log.Printf("failed to shutdown server: %v", err)
 	}
 
 	log.Println("Server gracefully stopped")
