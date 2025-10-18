@@ -79,4 +79,10 @@ func (s *orderServer) CreateOrder(ctx context.Context, req *orderV1.CreateOrderR
 		}, nil
     }
 
+	if len(res.Parts) != len(req.PartUuids){
+		return &orderV1.BadRequestError{
+			
+		}
+	}
+
 	
