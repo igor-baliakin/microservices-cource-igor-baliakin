@@ -1,0 +1,44 @@
+type: object
+required:
+  - uuid
+  - user_uuid
+  - part_uuids
+  - total_price
+  - status
+  - created_at
+properties:
+  uuid:
+    type: string
+    format: uuid
+    description: UUID заказа
+  user_uuid:
+    type: string
+    format: uuid
+    description: UUID пользователя, сделавшего заказ
+  part_uuids:
+    type: array
+    items:
+      type: string
+      format: uuid
+    description: Список UUID деталей, включённых в заказ
+  total_price:
+    type: number
+    format: double
+    description: Общая стоимость заказа
+  transaction_uuid:
+    type: string
+    format: uuid
+    nullable: true
+    description: UUID транзакции оплаты
+  payment_method:
+    $ref: ./enums/payment_method.yaml
+  status:
+    $ref: ./enums/order_status.yaml
+  created_at:
+    type: string
+    format: date-time
+    description: Дата и время создания заказа
+  updated_at:
+    type: string
+    format: date-time
+    description: Дата и время последнего обновления заказа

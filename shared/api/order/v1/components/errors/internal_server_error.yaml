@@ -1,0 +1,12 @@
+type: object
+required:
+  - code
+  - message
+properties:
+  code:
+    type: integer
+    enum:
+      - 500
+  message:
+    type: string
+    example: Internal server error

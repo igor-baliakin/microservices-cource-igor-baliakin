@@ -1,0 +1,28 @@
+post:
+  summary: Cancel order by UUID
+  operationId: CancelOrderByUUID
+  tags:
+    - Orders
+  parameters:
+    - $ref: ../params/order_uuid.yaml
+  responses:
+    '204':
+      description: Order successfully cancelled
+    '404':
+      description: Order not found
+      content:
+        application/json:
+          schema:
+            $ref: ../components/errors/not_found_error.yaml
+    '409':
+      description: Conflict - order cannot be cancelled
+      content:
+        application/json:
+          schema:
+            $ref: ../components/errors/conflict_error.yaml
+    default:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/errors/generic_error.yaml
